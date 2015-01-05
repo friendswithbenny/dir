@@ -21,7 +21,7 @@ public class TempDirectory extends File implements Closeable {
 		this("TempDirectory");
 	}
 	public TempDirectory(String prefix) throws IOException {
-		this(prefix, "");
+		this(prefix, ".tmpdir");
 	}
 	public TempDirectory(String prefix, String suffix) throws IOException {
 		this(prefix, suffix, null);

@@ -8,7 +8,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * extends the TempDirectory API to include a source/target zip-file.
- * when done, the user must call {@link #close} on any instance of this class, to release its resources (temp-directory).
+ * when done, the user must call {@link #close} on any instance of this class,
+ * to release its resources (temp-directory).
  * 
  * upon construction, an instance of this class works as a temporary directory.
  * this directory's contents are meant "to represent" the archived contents of the zip-file.
@@ -27,22 +28,23 @@ public class ZipDirectory extends TempDirectory {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ZipDirectory.class);
 	
+	public static final ZipDirectory unzip(File zip,
+			String prefix, String suffix, File location) throws IOException {
+		ZipDirectory retVal = new ZipDirectory(zip, prefix, suffix, location);
+		retVal.unzip();
+		return retVal;
+	}
+	
 	public final File ZIP;
-	public final boolean ZIP_ON_CLOSE;
 	public ZipDirectory(File zip) throws IOException {
-		this(zip, zip.exists(), true, "ZipDirectory", "", null);
+		this(zip, "ZipDirectory", ".zip.tmpdir", null);
 	}
 	public ZipDirectory(File zip,
-			boolean unzipOnCreate, boolean zipOnClose,
 			String prefix, String suffix, File location) throws IOException {
 		super(prefix, suffix, location); // IOException
 		ZIP = zip;
-		ZIP_ON_CLOSE = zipOnClose;
-		LOG.trace("creating ZipDirectory({}, {}, {}, {}, {}, {})",
-				zip, unzipOnCreate, zipOnClose, prefix, suffix, location);
-		
-		if (unzipOnCreate)
-			unzip();
+		LOG.trace("creating ZipDirectory({}, {}, {}, {})",
+				zip, prefix, suffix, location);
 	}
 	
 	/**
@@ -58,10 +60,14 @@ public class ZipDirectory extends TempDirectory {
 		ZipUtility.zip(ZIP, listFiles());
 	}
 	
+//	/** @deprecated close() should always be in the finally block, zip() should ~never be there */
+//	public void zipAndClose() throws IOException {
+//		zip();
+//		close();
+//	}
+	
 	@Override
 	public void close() throws IOException {
-		if (ZIP_ON_CLOSE)
-			zip();
 		super.close();
 	}
 	

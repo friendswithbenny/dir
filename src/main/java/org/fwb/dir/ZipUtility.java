@@ -175,9 +175,9 @@ public class ZipUtility {
 	 * @param overWrite filter to determine whether to over-write conflicting target file
 	 */
 	public static final void unzip(File inputZip, File outputDirectory, FileFilter overWrite) throws IOException {
-		LOG.debug("start unzip({}, {})", inputZip, outputDirectory);
+		LOG.debug("start unzip({}, {}, {})", inputZip, outputDirectory, overWrite);
 		
-		ZipFile zipFile = new ZipFile(inputZip); // ZipException, IOException
+		ZipFile zipFile = new ZipFile(inputZip);
 		
 		for (Enumeration<? extends ZipEntry> entries = zipFile.entries(); entries.hasMoreElements(); ) {
 			ZipEntry entry = entries.nextElement();
