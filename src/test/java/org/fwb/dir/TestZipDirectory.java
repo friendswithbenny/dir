@@ -17,7 +17,8 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 
 public class TestZipDirectory {
-	static Logger LOG = LoggerFactory.getLogger(TestZipDirectory.class);
+	static final Logger LOG = LoggerFactory.getLogger(TestZipDirectory.class);
+	
 	static final byte[] testZip;
 	static {
 		try {
@@ -26,7 +27,7 @@ public class TestZipDirectory {
 			throw new RuntimeException("never happens", e);
 		}
 	}
-
+	
 	// default location of setup/teardown are disabled
 	private File zip = new File("TestZipDirectory.zip");
 	
@@ -38,12 +39,13 @@ public class TestZipDirectory {
 	@After
 	public void teardown() throws IOException {
 		zip.delete();
+		zip = null;
 	}
 	
 	/** example usage */
 	@Test
 	public void testZipDirectory() throws Exception {
-		ZipDirectory zd = new ZipDirectory(zip); try {
+		ZipDirectory zd = ZipDirectory.unzip(zip); try {
 			LOG.debug("created zip-directory: " + zd);
 			Assert.assertTrue(
 					"the ZipDirectory should (1) exist and (2) be a directory",
@@ -81,11 +83,12 @@ public class TestZipDirectory {
 					"zip-file should not exist after delete",
 					zip.exists());
 			
+			zd.zip();
 		} finally {
 			try {
 				zd.close();
 			} catch (IOException e) {
-				throw new Exception("the TempDirectory should close successfully (default-zip and recursive-delete): ", e);
+				throw new AssertionError("the TempDirectory should close successfully (default-zip and recursive-delete): ", e);
 			}
 		}
 		
@@ -100,7 +103,7 @@ public class TestZipDirectory {
 		// the 10th character appears totally random/nondeterministic,
 		// different each time i zip the same, single-file zip :(
 		if (! Arrays.equals(testZip, Files.toByteArray(zip)))
-			LOG.error("suppressing test-failure: 'new zip should equal input zip'");
+			LOG.warn("suppressing test-failure: 'new zip should equal input zip'");
 //		Assert.assertArrayEquals(
 //				"new zip should equal input zip",
 //				testZip, Files.toByteArray(zip));

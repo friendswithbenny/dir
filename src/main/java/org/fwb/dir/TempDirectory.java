@@ -15,16 +15,22 @@ public class TempDirectory extends File implements Closeable {
 	/** default */
 	private static final long serialVersionUID = 1;
 	
-	private static final Logger LOG = LoggerFactory.getLogger(TempDirectory.class);
+	static final Logger LOG = LoggerFactory.getLogger(TempDirectory.class);
+	
+	static final String
+		DEFAULT_PREFIX = "TempDirectory",
+		DEFAULT_SUFFIX = ".tmpdir";
+	static final File
+		DEFAULT_LOCATION = null;
 	
 	public TempDirectory() throws IOException {
-		this("TempDirectory");
+		this(DEFAULT_PREFIX);
 	}
 	public TempDirectory(String prefix) throws IOException {
-		this(prefix, ".tmpdir");
+		this(prefix, DEFAULT_SUFFIX);
 	}
 	public TempDirectory(String prefix, String suffix) throws IOException {
-		this(prefix, suffix, null);
+		this(prefix, suffix, DEFAULT_LOCATION);
 	}
 	
 	/**

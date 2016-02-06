@@ -26,8 +26,16 @@ public class ZipDirectory extends TempDirectory {
 	/** default */
 	private static final long serialVersionUID = 1;
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ZipDirectory.class);
+	static final Logger LOG = LoggerFactory.getLogger(ZipDirectory.class);
 	
+	static final String
+		DEFAULT_PREFIX = "ZipDirectory",
+		DEFAULT_SUFFIX = ".zip" + TempDirectory.DEFAULT_SUFFIX;
+	
+	public static final ZipDirectory unzip(File zip) throws IOException {
+		return unzip(zip,
+				DEFAULT_PREFIX, DEFAULT_SUFFIX, DEFAULT_LOCATION);
+	}
 	public static final ZipDirectory unzip(File zip,
 			String prefix, String suffix, File location) throws IOException {
 		ZipDirectory retVal = new ZipDirectory(zip, prefix, suffix, location);
@@ -37,7 +45,8 @@ public class ZipDirectory extends TempDirectory {
 	
 	public final File ZIP;
 	public ZipDirectory(File zip) throws IOException {
-		this(zip, "ZipDirectory", ".zip.tmpdir", null);
+		this(zip,
+				DEFAULT_PREFIX, DEFAULT_SUFFIX, DEFAULT_LOCATION);
 	}
 	public ZipDirectory(File zip,
 			String prefix, String suffix, File location) throws IOException {

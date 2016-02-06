@@ -35,7 +35,7 @@ import com.google.common.io.ByteStreams;
 public class ZipUtility {
 	private static final Logger LOG = LoggerFactory.getLogger(ZipUtility.class);
 	
-	public static final char FAILSAFE_CHAR;
+	static final char FAILSAFE_CHAR;
 	static {
 		Properties p = new Properties();
 		try {
