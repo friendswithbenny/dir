@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -17,6 +16,7 @@ import java.util.zip.ZipOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
 import com.google.common.io.ByteStreams;
 
 /**
@@ -33,29 +33,20 @@ import com.google.common.io.ByteStreams;
  *  see guava ByteSource.
  */
 public class ZipUtility {
-	private static final Logger LOG = LoggerFactory.getLogger(ZipUtility.class);
+	static final Logger LOG = LoggerFactory.getLogger(ZipUtility.class);
 	
 	static final char FAILSAFE_CHAR;
 	static {
-		Properties p = new Properties();
-		try {
-			InputStream is = ZipUtility.class.getResourceAsStream("ZipUtility.properties"); try {
-				p.load(is);
-			} finally {
-				is.close();
-			}
-			String failsafeString =
-					System.getProperty("org.fwb.dir.ZipUtility.FAILSAFE_CHAR",
-							p.getProperty("FAILSAFE_CHAR"));
-			if (failsafeString.length() != 1)
-				throw new IllegalArgumentException("FAILSAFE_CHAR should be a single character: \"" + failsafeString + "\"");
+			String failsafeString = System.getProperty("org.fwb.dir.ZipUtility.FAILSAFE_CHAR", "-");
+			Preconditions.checkArgument(1 == failsafeString.length(),
+				"FAILSAFE_CHAR '%s' should be a single character", failsafeString);
 			FAILSAFE_CHAR = failsafeString.charAt(0);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+			LOG.trace("FAILSAFE_CHAR: '{}'", FAILSAFE_CHAR);
 	}
 	
-	@Deprecated private ZipUtility() { }
+	/** @deprecated static utilities only */
+	@Deprecated
+	private ZipUtility() { }
 	
 	/**
 	 * facility method to auto-handle streaming to a zip File
@@ -84,7 +75,7 @@ public class ZipUtility {
 	 * @throws IOException thrown by underlying streaming/zipping libraries
 	 */
 	public static final void zip(OutputStream outputZip, File... inputContents) throws IOException {
-		LOG.debug("start zip({}, {})", outputZip, inputContents);
+		LOG.trace("start zip({}, {})", outputZip, inputContents);
 		ZipOutputStream zos = new ZipOutputStream(outputZip);
 		for (File f : inputContents) {
 			String root = f.getParent();
@@ -94,12 +85,13 @@ public class ZipUtility {
 			 * while all other directories do not
 			 */
 			if (! root.endsWith(File.separator))
-				root = root + File.separator;
+				root += File.separator;
 			addFileToZip(zos, root, f);
 		}
 		zos.finish();	// ZipException, IOException
-		LOG.debug("end zip({}, {})", outputZip, inputContents);
+		LOG.trace("end zip({}, {})", outputZip, inputContents);
 	}
+	
 	/**
 	 * adds a File, named relative to some context root path, to a zip container
 	 * 
@@ -175,7 +167,7 @@ public class ZipUtility {
 	 * @param overWrite filter to determine whether to over-write conflicting target file
 	 */
 	public static final void unzip(File inputZip, File outputDirectory, FileFilter overWrite) throws IOException {
-		LOG.debug("start unzip({}, {}, {})", inputZip, outputDirectory, overWrite);
+		LOG.trace("start unzip({}, {}, {})", inputZip, outputDirectory, overWrite);
 		
 		ZipFile zipFile = new ZipFile(inputZip);
 		
@@ -217,7 +209,7 @@ public class ZipUtility {
 		
 		zipFile.close(); // IOException
 		
-		LOG.debug("end unzip({}, {})", inputZip, outputDirectory);
+		LOG.trace("end unzip({}, {})", inputZip, outputDirectory);
 	}
 	
 	/**
@@ -226,7 +218,7 @@ public class ZipUtility {
 	 * note: the InputStream is NOT closed upon completion
 	 */
 	public static final void unzip(InputStream zip, File outputDirectory) throws IOException {
-		LOG.debug("start unzip(" + zip + ", " + outputDirectory + ")");
+		LOG.trace("start unzip({}, {})", zip, outputDirectory);
 		
 		ZipInputStream zipFile = new ZipInputStream(zip);										// ZipException, IOException
 		
@@ -255,6 +247,6 @@ public class ZipUtility {
 		
 		zipFile.close();
 		
-		LOG.debug("done unzip(" + zip + ", " + outputDirectory + ")");
+		LOG.trace("done unzip({}, {})", zip, outputDirectory);
 	}
 }
