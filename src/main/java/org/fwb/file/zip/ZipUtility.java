@@ -1,4 +1,4 @@
-package org.fwb.dir;
+package org.fwb.file.zip;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -13,6 +13,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.fwb.file.dir.DirectoryUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

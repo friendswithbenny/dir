@@ -1,4 +1,4 @@
-package org.fwb.dir;
+package org.fwb.file.dir;
 
 import java.io.Closeable;
 import java.io.File;
@@ -17,10 +17,10 @@ public class TempDirectory extends File implements Closeable {
 	
 	static final Logger LOG = LoggerFactory.getLogger(TempDirectory.class);
 	
-	static final String
+	protected static final String
 		DEFAULT_PREFIX = "TempDirectory",
 		DEFAULT_SUFFIX = ".tmpdir";
-	static final File
+	protected static final File
 		DEFAULT_LOCATION = null;
 	
 	public TempDirectory() throws IOException {

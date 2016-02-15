@@ -5,10 +5,10 @@
 	<groupId>org.fwb</groupId>
 	<artifactId>fwb-dirp</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1-SNAPSHOT</version>
 
 	<name>dirp</name>
-	<description>Directory Package. utilities for temp and zip functionality.</description>
+	<description>Directory Package. filesystem utilities.</description>
 	<url>https://github.com/friendswithbenny/fwb-dirp</url>
 	
 	<developers>

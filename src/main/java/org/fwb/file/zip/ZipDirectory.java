@@ -1,8 +1,9 @@
-package org.fwb.dir;
+package org.fwb.file.zip;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.fwb.file.dir.TempDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

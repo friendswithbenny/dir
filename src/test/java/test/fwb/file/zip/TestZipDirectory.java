@@ -1,10 +1,10 @@
-package org.fwb.dir;
+package test.fwb.file.zip;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.fwb.dir.ZipDirectory;
+import org.fwb.file.zip.ZipDirectory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

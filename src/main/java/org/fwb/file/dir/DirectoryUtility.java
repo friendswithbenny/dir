@@ -1,4 +1,4 @@
-package org.fwb.dir;
+package org.fwb.file.dir;
 
 import java.io.File;
 import java.io.FileFilter;

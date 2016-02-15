@@ -1,9 +1,9 @@
-package org.fwb.dir;
+package test.fwb.file.dir;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.fwb.dir.TempDirectory;
+import org.fwb.file.dir.TempDirectory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
