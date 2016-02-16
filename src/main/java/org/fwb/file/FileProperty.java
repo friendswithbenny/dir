@@ -93,9 +93,7 @@ public interface FileProperty<T> extends Function<File, T> {
 		extension {
 			@Override
 			public String apply(File f) {
-				String s = f.getName();
-				int i = s.lastIndexOf('.');
-				return i < 0 ? null : s.substring(i + 1).toLowerCase();
+				return FileUtil.getExtension(f.getName());
 			}
 		};
 	}

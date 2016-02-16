@@ -15,10 +15,7 @@ public class FileUtil {
 	 */
 	public static String getExtension(String s) {
 		int i = s.lastIndexOf('.');
-		if (i < 0)
-			return null;
-		else
-			return s.substring(i + 1);
+		return 0 > i ? null : s.substring(i + 1);
 	}
 	
 	/**
@@ -27,16 +24,17 @@ public class FileUtil {
 	 */
 	public static String getSimpleName(String s) {
 		int i = s.lastIndexOf('.');
-		if (i < 0)
-			return s;
-		else
-			return s.substring(0, i);
+		return 0 > i ? s : s.substring(0, i);
 	}
 	
 	static final String
-		PATTERN_SECONDS = "yyyy-MM-dd_HHmm-ss";
+		PATTERN_SECONDS = "yyyy-MM-dd_HHmm-ss",
+		PATTERN_TIMESTAMP = "yyyy-MM-dd_HHmm-ss.SSSZ";
 	public static DateFormat seconds() {
 		return new SimpleDateFormat(PATTERN_SECONDS);
+	}
+	public static DateFormat timestamp() {
+		return new SimpleDateFormat(PATTERN_TIMESTAMP);
 	}
 	
 	public static String getSizeString(long size) {
