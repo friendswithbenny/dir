@@ -80,13 +80,21 @@ public class ZipUtility {
 		ZipOutputStream zos = new ZipOutputStream(outputZip);
 		for (File f : inputContents) {
 			String root = f.getParent();
+			
 			/*
-			 * necessary because actual roots (drives, like c:\)
-			 * have canonical path ending in the separator,
-			 * while all other directories do not
+			 * necessary for relative paths
 			 */
-			if (! root.endsWith(File.separator))
-				root += File.separator;
+			if (null == root)
+				root = "";
+			else
+				/*
+				 * necessary because actual roots (drives, like c:\)
+				 * have canonical path ending in the separator,
+				 * while all other directories do not
+				 */
+				if (! root.endsWith(File.separator))
+					root += File.separator;
+			
 			addFileToZip(zos, root, f);
 		}
 		zos.finish();	// ZipException, IOException
