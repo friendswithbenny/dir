@@ -1,7 +1,6 @@
 package org.fwb.file.dir;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -75,10 +74,10 @@ public class DirectoryUtility {
 			return new File(PARENT, fileName);
 		}
 		
-		public Map<String, File> getDirectoryMap(FileFilter ff) {
+		public Map<String, File> getDirectoryMap() {
 			return Maps.asMap(
 					new ListSetView<String>(Arrays.asList(
-							PARENT.list(FileFilters.toFilenameFilter(ff)))),
+							PARENT.list())),
 					this);
 		}
 	}
