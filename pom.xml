@@ -18,23 +18,32 @@
 		</developer>
 	</developers>
 	
+	<properties>
+		<slf4j.version>1.7.21</slf4j.version>
+		
+		<fwb-alj.version>1.1-SNAPSHOT</fwb-alj.version>
+		
+		<junit.version>4.12</junit.version>
+	</properties>
+	
 	<dependencies>
 		<dependency> 
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.9</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		
+		<!-- includes guava -->
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>17.0</version>
+			<groupId>org.friendswithbenny</groupId>
+			<artifactId>fwb-alj</artifactId>
+			<version>${fwb-alj.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

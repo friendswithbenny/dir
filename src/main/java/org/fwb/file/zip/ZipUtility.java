@@ -13,7 +13,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.fwb.file.dir.DirectoryUtility;
+import org.fwb.file.dir.FileFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -161,7 +161,7 @@ public class ZipUtility {
 	 * @see #unzip(File, File, FileFilter)
 	 */
 	public static final void unzip(File inputZip, File outputDirectory) throws IOException {
-		unzip(inputZip, outputDirectory, DirectoryUtility.FF_TRUE);
+		unzip(inputZip, outputDirectory, FileFilters.FF_TRUE);
 	}
 	/**
 	 * unzips the contents of a zip File into a directory.
