@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.util.Date;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 
 /** a marker interface */
 public interface FileProperty<T> extends Function<File, T> {
 	/** the property name */
 	String name();
+	
+	/** the value type */
+	Class<?> type();
 	
 	/**
 	 * an enumeration of the various metadata fields describing a File.
@@ -26,13 +30,13 @@ public interface FileProperty<T> extends Function<File, T> {
 	 * e.g. without 'inputStream' and with only 'lengthString'
 	 */
 	enum FileField implements FileProperty<Object> {
-		name {
+		name(String.class) {
 			@Override
-			public Object apply(File f) {
+			public String apply(File f) {
 				return f.getName();
 			}
 		},
-		path {
+		path(String.class) {
 			@Override
 			public String apply(File f) {
 				try {
@@ -42,59 +46,79 @@ public interface FileProperty<T> extends Function<File, T> {
 				}
 			}
 		},
-		length {
+		length(Long.class) {
 			@Override
 			public Long apply(File f) {
 				return f.length();
 			}
 		},
-		lengthString {
+		lengthString(String.class) {
 			@Override
 			public final String apply(File f) {
 				return FileUtil.getSizeString((Long) length.apply(f));
 			}
 		},
-		hidden {
+		hidden(Boolean.class) {
 			@Override
 			public Boolean apply(File f) {
 				return f.isHidden();
 			}
 		},
-		lastModified {
+		lastModified(Long.class) {
 			@Override
 			public Long apply(File f) {
 				return f.lastModified();
 			}
 		},
-		lastModifiedDate {
+		lastModifiedDate(Date.class) {
 			@Override
 			public Date apply(File f) {
 				return new Date((Long) lastModified.apply(f));
 			}
 		},
-		lastModifiedString {
+		lastModifiedString(String.class) {
 			@Override
 			public String apply(File f) {
 				return FileUtil.seconds().format((Date) lastModifiedDate.apply(f));
 			}
 		},
-		isDirectory {
+		isDirectory(Boolean.class) {
 			@Override
 			public Boolean apply(File f) {
 				return f.isDirectory();
 			}
 		},
-		simpleName {
+		simpleName(String.class) {
 			@Override
 			public String apply(File f) {
 				return FileUtil.getSimpleName(f.getName());
 			}
 		},
-		extension {
+		extension(String.class) {
 			@Override
 			public String apply(File f) {
 				return FileUtil.getExtension(f.getName());
 			}
 		};
+		
+		final Class<?> CLS;
+		FileField(Class<?> cls) {
+			CLS = cls;
+		}
+		
+		public Class<?> type() {
+			return CLS;
+		}
+		
+		public <T> FileProperty<T> cast(Class<T> type) {
+			// TODO should this be .equals instead?
+			// i take some comfort in this ensuring the same classloader, too..
+			Preconditions.checkArgument(type() == type,
+					"FileField %s can't be cast to return %s (expected: %s)", this, type, type());
+			
+			@SuppressWarnings({ "unchecked", "rawtypes"})
+			FileProperty<T> retVal = (FileProperty<T>) (FileProperty) this;
+			return retVal;
+		}
 	}
 }
