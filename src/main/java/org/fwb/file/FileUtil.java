@@ -1,8 +1,15 @@
 package org.fwb.file;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+
+import com.google.common.io.ByteStreams;
 
 public class FileUtil {
 	/** @deprecated static utilities only */
@@ -41,5 +48,17 @@ public class FileUtil {
 		NumberFormat fmt = new ByteSizeFormat();
 		return fmt.format(size);
 	}
-
+	
+	/**
+	 * a surprising omission from the guava API,
+	 * found in neither {@link Files} nor {@link ByteStreams} nor {@link Resources}.
+	 * @throws IOException 
+	 */
+	public static long save(InputStream from, File to) throws IOException {
+		OutputStream os = new FileOutputStream(to); try {
+			return ByteStreams.copy(from, os);
+		} finally {
+			os.close();
+		}
+	}
 }
