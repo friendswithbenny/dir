@@ -5,11 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
+import org.fwb.io.StreamUtil;
+
 import com.google.common.io.ByteStreams;
+import com.google.common.io.Resources;
 
 public class FileUtil {
 	/** @deprecated static utilities only */
@@ -51,12 +55,24 @@ public class FileUtil {
 	
 	/**
 	 * a surprising omission from the guava API,
-	 * found in neither {@link Files} nor {@link ByteStreams} nor {@link Resources}.
-	 * @throws IOException 
+	 * found in neither {@link ByteStreams} nor {@link Files}.
+	 * delegates to {@link ByteStreams#copy(InputStream, OutputStream)}.
 	 */
 	public static long save(InputStream from, File to) throws IOException {
 		OutputStream os = new FileOutputStream(to); try {
 			return ByteStreams.copy(from, os);
+		} finally {
+			os.close();
+		}
+	}
+	/**
+	 * a surprising omission from the guava API,
+	 * found in neither {@link Resources} nor {@link Files}.
+	 * delegates to {@link StreamUtil#copy(URL, OutputStream)}. 
+	 */
+	public static long save(URL from, File to) throws IOException {
+		OutputStream os = new FileOutputStream(to); try {
+			return StreamUtil.copy(from, os);
 		} finally {
 			os.close();
 		}
