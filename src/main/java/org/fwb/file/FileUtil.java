@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 
 import org.fwb.io.StreamUtil;
 
+import com.google.common.base.Preconditions;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 
@@ -75,6 +76,19 @@ public class FileUtil {
 			return StreamUtil.copy(from, os);
 		} finally {
 			os.close();
+		}
+	}
+	
+	public static String getCanonicalPathUnchecked(File f){
+		Preconditions.checkNotNull(f, "cannot getCanonicalPath on null file");
+		try {
+			return f.getCanonicalPath();
+		} catch (IOException e) {
+			throw new RuntimeException(
+					String.format(
+							"IOE thrown by getCanonicalPath(%s)",
+							f.getAbsolutePath()),
+					e);
 		}
 	}
 }
