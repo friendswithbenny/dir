@@ -26,7 +26,7 @@ public class FileUtil {
 	 * n.b. the guava alternative without nulls ({@link com.google.common.io.Files.getFileExtension})
 	 */
 	public static String getExtension(String s) {
-		int i = s.lastIndexOf('.');
+		int i = findExtension(s);
 		return 0 > i ? null : s.substring(i + 1);
 	}
 	
@@ -35,8 +35,22 @@ public class FileUtil {
 	 * n.b. the guava alternative without nulls ({@link com.google.common.io.Files.getFileNameWithoutExtension})
 	 */
 	public static String getSimpleName(String s) {
-		int i = s.lastIndexOf('.');
+		int i = findExtension(s);
 		return 0 > i ? s : s.substring(0, i);
+	}
+	
+	public static File changeExtension(File f, String newExtension) {
+		return new File(f.getParent(), changeExtension(f.getName(), newExtension));
+	}
+	public static String changeExtension(String s, String newExtension) {
+		return getSimpleName(s) + DOT + newExtension;
+	}
+	
+	static final char DOT = '.';
+	static final int findExtension(String s) {
+		return
+				Preconditions.checkNotNull(s, "can't check extension of null filename")
+				.lastIndexOf(DOT);
 	}
 	
 	static final String
