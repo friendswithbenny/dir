@@ -72,6 +72,7 @@ public class FileUtil {
 	 * a surprising omission from the guava API,
 	 * found in neither {@link ByteStreams} nor {@link Files}.
 	 * delegates to {@link ByteStreams#copy(InputStream, OutputStream)}.
+	 * TODO consider moving to fwb-ciao
 	 */
 	public static long save(InputStream from, File to) throws IOException {
 		OutputStream os = new FileOutputStream(to); try {
@@ -83,7 +84,8 @@ public class FileUtil {
 	/**
 	 * a surprising omission from the guava API,
 	 * found in neither {@link Resources} nor {@link Files}.
-	 * delegates to {@link StreamUtil#copy(URL, OutputStream)}. 
+	 * delegates to {@link StreamUtil#copy(URL, OutputStream)}.
+	 * TODO move to fwb-ciao 
 	 */
 	public static long save(URL from, File to) throws IOException {
 		OutputStream os = new FileOutputStream(to); try {
