@@ -23,7 +23,7 @@
 		
 		<fwb-alj.version>1.2-SNAPSHOT</fwb-alj.version>
 		
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 	</properties>
 	
 	<dependencies>
